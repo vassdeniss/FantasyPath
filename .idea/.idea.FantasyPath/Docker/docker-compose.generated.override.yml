@@ -1,0 +1,21 @@
+# This is a generated file. Not intended for manual editing.
+services:
+  web:
+    build:
+      context: "C:\\Users\\Denis\\RiderProjects\\FantasyPath"
+      dockerfile: "FantasyPath.Web/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/FantasyPath.Web.dll"
+    environment:
+      ASPNETCORE_STATICWEBASSETS: "/app/bin/Debug/net8.0/FantasyPath.Web.staticwebassets.runtime.CT.json"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "fantasypath:dev"
+    ports: []
+    volumes:
+    - "C:\\Users\\Denis\\.nuget\\packages:/home/app/.nuget/packages"
+    - "C:\\Users\\Denis\\RiderProjects\\FantasyPath\\FantasyPath.Web:/app:rw"
+    - "C:\\Users\\Denis\\RiderProjects\\FantasyPath:/src:rw"
+    working_dir: "/app"
