@@ -1,8 +1,111 @@
-﻿@{
+﻿@using FantasyPath.Infrastructure.Models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@if (!SignInManager.IsSignedIn(User))
+{
+    <div class="container-fluid p-0">
+        <!-- Hero Section -->
+        <section class="hero-section text-center text-white py-5" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);">
+            <div class="container py-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <h1 class="display-4 fw-bold mb-4">Welcome to the Ultimate Fighting Fantasy Companion</h1>
+                        <p class="lead mb-5">Manage your gamebook collection, track adventures, and relive your favorite fantasy journeys</p>
+                        <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+                            <a class="btn btn-light btn-lg px-5" asp-area="Identity" asp-page="/Account/Register">Get Started</a>
+                            <a class="btn btn-outline-light btn-lg px-5" asp-area="Identity" asp-page="/Account/Login">Sign In</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="py-5">
+            <div class="container px-5 my-5">
+                <div class="row gx-5">
+                    <div class="col-lg-4 mb-5">
+                        <div class="card h-100 shadow border-0">
+                            <div class="card-body p-4">
+                                <div class="feature bg-primary bg-gradient text-white rounded-3 mb-4">
+                                    <i class="bi bi-book fs-1"></i>
+                                </div>
+                                <h2 class="h4 fw-bold">Collection Management</h2>
+                                <p class="text-muted mb-0">Catalog your physical and digital gamebooks with detailed metadata and condition tracking.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 mb-5">
+                        <div class="card h-100 shadow border-0">
+                            <div class="card-body p-4">
+                                <div class="feature bg-primary bg-gradient text-white rounded-3 mb-4">
+                                    <i class="bi bi-map fs-1"></i>
+                                </div>
+                                <h2 class="h4 fw-bold">Interactive Mapping</h2>
+                                <p class="text-muted mb-0">Visualize your adventure paths with dynamic flowcharts and branching diagrams.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 mb-5">
+                        <div class="card h-100 shadow border-0">
+                            <div class="card-body p-4">
+                                <div class="feature bg-primary bg-gradient text-white rounded-3 mb-4">
+                                    <i class="bi bi-dice-5 fs-1"></i>
+                                </div>
+                                <h2 class="h4 fw-bold">Digital Tools</h2>
+                                <p class="text-muted mb-0">Integrated dice roller, character sheet tracker, and progress saver.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="bg-dark text-white py-5">
+            <div class="container text-center py-5">
+                <h2 class="mb-4">Ready to Begin Your Adventure?</h2>
+                <p class="lead mb-4">Join our community of gamebook enthusiasts today</p>
+                <a class="btn btn-primary btn-lg px-5" asp-area="Identity" asp-page="/Account/Register">Start Your Journey</a>
+            </div>
+        </section>
+    </div>
+
+    <style>
+        .hero-section {
+            min-height: 75vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .feature {
+            width: 4rem;
+            height: 4rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .btn-light {
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+}
+else
+{
+    <meta http-equiv="refresh" content="0; url=/Collection" />
+}
