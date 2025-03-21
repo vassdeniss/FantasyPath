@@ -1,0 +1,80 @@
+﻿@model IEnumerable<BookViewModel>
+@{
+    ViewData["Title"] = "My Gamebook Collection";
+}
+
+<div class="container">
+    @if (!this.Model.Any())
+    {
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-8 text-center">
+                <div class="card shadow">
+                    <div class="card-body py-5">
+                        <h2 class="mb-4">No Books in Your Collection</h2>
+                        <p class="text-muted mb-4">Start building your Fighting Fantasy library</p>
+                        <a asp-controller="Collection" asp-action="Add" class="btn btn-primary btn-lg">
+                            <i class="bi bi-plus-circle"></i> Add First Book
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>My Collection</h1>
+            <a asp-controller="Collection" asp-action="Add" class="btn btn-primary">
+                <i class="bi bi-plus-lg"></i> Add Book
+            </a>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+            @foreach (BookViewModel book in Model)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-img-top bg-light text-center p-4">
+                            <div class="book-cover-placeholder">
+                                <i class="bi bi-book fs-1 text-muted"></i>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@book.Title</h5>
+                            <p class="card-text text-muted">@book.Author</p>
+                            <div class="text-muted small">
+                                <i class="bi bi-upc"></i> @book.Isbn
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <a asp-controller="Book" asp-action="Details" asp-route-id="@book.Id"
+                               class="btn btn-outline-primary btn-sm">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+<style>
+    .book-cover-placeholder {
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+    }
+
+    .card {
+        transition: transform 0.2s, box-shadow 0.2s;
+        border: none;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+</style>
