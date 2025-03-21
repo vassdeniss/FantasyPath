@@ -1,4 +1,5 @@
-﻿using FantasyPath.Infrastructure.Models;
+﻿using FantasyPath.Infrastructure.Configurations;
+using FantasyPath.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,8 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
         base.OnModelCreating(builder);
 
+        builder.ApplyConfiguration(new BookConfiguration());
+        
         builder.Entity<UserBook>()
             .HasKey(ub => new { ub.UserId, ub.BookId });
         

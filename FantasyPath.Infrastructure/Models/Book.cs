@@ -16,6 +16,8 @@ public class Book
 
     [Required]
     public string Isbn { get; set; } = null!;
+
+    [MaxLength(500)] public string CoverImageUrl { get; set; } = null!;
     
     public virtual ICollection<UserBook> UserBooks { get; set; } = new HashSet<UserBook>();
     
