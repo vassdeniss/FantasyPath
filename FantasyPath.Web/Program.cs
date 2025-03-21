@@ -1,5 +1,10 @@
 using FantasyPath.Infrastructure;
+using FantasyPath.Infrastructure.Common;
+using FantasyPath.Infrastructure.Configurations;
 using FantasyPath.Infrastructure.Models;
+using FantasyPath.Services;
+using FantasyPath.Services.Contracts;
+using FantasyPath.Web.Controllers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +22,11 @@ builder.Services.AddIdentity<User, IdentityRole<Guid>>()
     .AddDefaultTokenProviders();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services.AddAutoMapper(typeof(IBookService).Assembly, typeof(CollectionController).Assembly);
+
+builder.Services.AddScoped<IRepository, Repository>();
+builder.Services.AddScoped<IBookService, BookService>();
 
 var app = builder.Build();
 
@@ -37,6 +47,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

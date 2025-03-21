@@ -1,0 +1,34 @@
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<BookViewModel>
+
+@{
+    ViewData["Title"] = "Add Book";
+}
+
+<div class="container">
+    <h2>Available Books</h2>
+
+    <div class="row">
+        @foreach (BookViewModel book in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="@book.CoverImageUrl" class="card-img-top" alt="@book.Title" style="height: 400px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">@book.Title</h5>
+                        <p class="card-text">
+                            <strong>Author:</strong> @book.Author<br>
+                            <strong>ISBN:</strong> @book.Isbn
+                        </p>
+                        <form asp-controller="Collection" asp-action="Add" method="post">
+                            <input type="hidden" name="BookId" value="@book.Id" />
+                            <input type="hidden" name="UserId" value="@User.FindFirstValue(ClaimTypes.NameIdentifier)" />
+                            <button type="submit" class="btn btn-primary">Add to Collection</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
