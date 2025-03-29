@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FantasyPath.Services.Contracts;
 using FantasyPath.Services.Models;
+using FantasyPath.Web.Extensions;
 using FantasyPath.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,18 +20,36 @@ public class CollectionController : Controller
     }
     
     [HttpGet]
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return this.View(Enumerable.Empty<BookViewModel>());
+        ICollection<BookServiceModel> dbBooks = await this._bookService.GetAllBooksForUserAsync(this.User.Id());
+        IEnumerable<BookViewModel> books = this._mapper.Map<IEnumerable<BookViewModel>>(dbBooks);
+
+        return this.View(books);
     }
 
     [HttpGet]
     [Authorize]
     public async Task<IActionResult> Add()
     {
-        ICollection<BookServiceModel> dbBooks = await this._bookService.GetAllBooksAsync();
+        ICollection<BookServiceModel> dbBooks = await this._bookService.GetAllBooksUserDoesNotOwnAsync(this.User.Id());
         IEnumerable<BookViewModel> books = this._mapper.Map<IEnumerable<BookViewModel>>(dbBooks);
         
         return this.View(books);
+    }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> Add(AddBookFormModel model)
+    {
+        Guid currentUserId = this.User.Id();
+        if (model.UserId != currentUserId)
+        {
+            return this.Forbid();
+        }
+        
+        await this._bookService.AddBookToUserAsync(model.UserId, model.BookId);
+        
+        return this.RedirectToAction("Index", "Home");
     }
 }
