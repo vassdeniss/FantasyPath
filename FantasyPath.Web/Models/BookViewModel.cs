@@ -11,4 +11,6 @@ public class BookViewModel
     public string Isbn { get; set; } = null!;
         
     public string CoverImageUrl { get; set; } = null!;
+
+    public ICollection<SaveViewModel> Saves { get; set; } = new List<SaveViewModel>();
 }

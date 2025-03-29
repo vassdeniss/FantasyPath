@@ -4,7 +4,7 @@ ViewData["Title"] = "My Gamebook Collection";
 }
 
 <div class="container py-4">
-    @if (!Model.Any())
+    @if (!this.Model.Any())
     {
     <div class="row justify-content-center mt-5">
         <div class="col-md-8 text-center">
@@ -30,7 +30,7 @@ ViewData["Title"] = "My Gamebook Collection";
     </div>
 
     <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
-        @foreach (var book in Model)
+        @foreach (BookViewModel book in this.Model)
         {
         <div class="col">
             <div class="card h-100 shadow-sm">
@@ -47,7 +47,7 @@ ViewData["Title"] = "My Gamebook Collection";
                     </div>
                 </div>
                 <div class="card-footer bg-transparent">
-                    <a asp-controller="Book" asp-action="Details" asp-route-id="@book.Id" class="btn btn-outline-primary btn-sm">
+                    <a asp-controller="Book" asp-action="Index" asp-route-id="@book.Id" class="btn btn-outline-primary btn-sm">
                         View Details
                     </a>
                 </div>

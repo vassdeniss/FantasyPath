@@ -1,0 +1,138 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model BookViewModel
+
+@{
+    ViewData["Title"] = this.Model.Title;
+}
+
+<div class="container py-4">
+    <div class="mb-4">
+        <a asp-controller="Collection" asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Collection
+        </a>
+    </div>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="book-cover-container shadow-sm">
+                <img src="@this.Model.CoverImageUrl"
+                     class="book-cover"
+                     alt="@this.Model.Title">
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h1 class="mb-3">@this.Model.Title</h1>
+                    <div class="text-muted mb-4">
+                        <div class="h5">by @this.Model.Author</div>
+                        <div class="small"><i class="bi bi-upc"></i> @this.Model.Isbn</div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="mb-0">Saved Games</h3>
+                        <a asp-controller="Save" asp-action="Add" asp-route-id="@this.Model.Id"
+                           class="btn btn-primary btn-sm">
+                            <i class="bi bi-plus-lg"></i> New Save
+                        </a>
+                    </div>
+
+                    @if (!this.Model.Saves.Any())
+                    {
+                    <div class="alert alert-info">
+                        No saved games found. Start a new adventure!
+                    </div>
+                    }
+                    else
+                    {
+                    <div class="row g-3">
+                        @foreach (SaveViewModel save in this.Model.Saves)
+                        {
+                        <div class="col-12">
+                            <div class="card save-card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h5 class="card-title mb-3">
+                                                Save #@this.Model.Saves.ToList().IndexOf(save)
+                                                <span class="text-muted small ms-2">
+                                                            @save.Created.ToString("g")
+                                                        </span>
+                                            </h5>
+                                            <div class="d-flex gap-3">
+                                                <div class="stat-pill">
+                                                    <span class="stat-label">Skill</span>
+                                                    <span class="stat-value">@save.Skill</span>
+                                                </div>
+                                                <div class="stat-pill">
+                                                    <span class="stat-label">Stamina</span>
+                                                    <span class="stat-value">@save.Stamina</span>
+                                                </div>
+                                                <div class="stat-pill">
+                                                    <span class="stat-label">Luck</span>
+                                                    <span class="stat-value">@save.Luck</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="btn-group">
+                                            <a asp-controller="Save" asp-action="Details" asp-route-id="@save.Id"
+                                               class="btn btn-outline-primary btn-sm">
+                                                <i class="bi bi-play-circle"></i> Continue
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .save-card {
+        transition: transform 0.2s, box-shadow 0.2s;
+        border: 1px solid rgba(0, 0, 0, 0.125);
+    }
+
+    .save-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-pill {
+        background-color: #f8f9fa;
+        border-radius: 20px;
+        padding: 0.25rem 0.75rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
+        color: #6c757d;
+    }
+
+    .stat-value {
+        font-weight: 600;
+        color: #0d6efd;
+    }
+
+    .inventory-pre {
+        background-color: #f8f9fa;
+        border-radius: 4px;
+        padding: 0.5rem;
+        font-size: 0.875rem;
+        margin: 0;
+    }
+
+    .book-cover-container {
+        height: 500px;
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: #f8f9fa;
+    }
+</style>

@@ -59,4 +59,12 @@ public class BookService(IRepository repo, IMapper mapper) : IBookService
             await repo.SaveChangesAsync();
         }
     }
+
+    public async Task<BookServiceModel> GetBookByIdWithSavesAsync(Guid bookId)
+    {
+        Book book = await repo.AllReadonly<Book>(b => b.Id == bookId)
+            .Include(b => b.Saves)
+            .FirstAsync();
+        return mapper.Map<BookServiceModel>(book);
+    }
 }

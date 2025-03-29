@@ -9,4 +9,6 @@ public interface IBookService
     Task<ICollection<BookServiceModel>> GetAllBooksForUserAsync(Guid userId);
     
     Task AddBookToUserAsync(Guid userId, Guid bookId);
+    
+    Task<BookServiceModel> GetBookByIdWithSavesAsync(Guid bookId);
 }

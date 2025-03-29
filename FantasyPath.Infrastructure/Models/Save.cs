@@ -19,7 +19,9 @@ public class Save
     [Range(1, 12)]
     public int Luck { get; set; }
 
-    public string Inventory { get; set; } = "{}";
+    [Required] public string Inventory { get; set; } = "{}";
+    
+    [Required] public DateTime Created { get; set; } = DateTime.Now;
 
     public User User { get; set; } = null!;
     
