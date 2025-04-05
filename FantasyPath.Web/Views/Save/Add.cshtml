@@ -1,0 +1,282 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model SaveViewModel
+
+@{
+    ViewData["Title"] = "Create New Save";
+}
+
+<div class="container py-4">
+    <div class="card shadow">
+        <div class="card-body">
+            <h1 class="mb-4">Create New Adventure</h1>
+            <form asp-controller="Save" asp-action="Add" method="post">
+                <input type="hidden" asp-for="BookId" value="@this.Model.BookId" />
+                <div class="row g-4">
+                    <div class="col-12">
+                        <div class="card stat-card">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4 text-center">
+                                        <div class="dice-container mb-3">
+                                            <div class="dice" id="skillDice">
+                                                <div class="dice-face">⚄</div>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-danger btn-roll" onclick="rollSkill()">
+                                            Roll Skill <i class="bi bi-dice-5"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h3 class="mb-3">Heroic Skill</h3>
+                                        <p class="text-muted">
+                                            Your fighting expertise - Roll 1 die and add 6
+                                        </p>
+                                        <div class="form-floating">
+                                            <input asp-for="Skill" type="number" class="form-control" readonly required />
+                                            <label asp-for="Skill"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="card stat-card">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4 text-center">
+                                        <div class="dice-container mb-3">
+                                            <div class="dice-group" id="staminaDice">
+                                                <div class="dice">
+                                                    <div class="dice-face">⚃</div>
+                                                </div>
+                                                <div class="dice">
+                                                    <div class="dice-face">⚂</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-danger btn-roll" onclick="rollStamina()">
+                                            Roll Stamina <i class="bi bi-dice-5"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h3 class="mb-3">Mighty Stamina</h3>
+                                        <p class="text-muted">
+                                            Your endurance - Roll 2 dice and add 12
+                                        </p>
+                                        <div class="form-floating">
+                                            <input asp-for="Stamina" type="number" class="form-control" readonly required />
+                                            <label asp-for="Stamina"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="card stat-card">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4 text-center">
+                                        <div class="dice-container mb-3">
+                                            <div class="dice" id="luckDice">
+                                                <div class="dice-face">⚁</div>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-danger btn-roll" onclick="rollLuck()">
+                                            Roll Luck <i class="bi bi-dice-5"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h3 class="mb-3">Legendary Luck</h3>
+                                        <p class="text-muted">
+                                            Your fortune - Roll 1 die and add 6
+                                        </p>
+                                        <div class="form-floating">
+                                            <input asp-for="Luck" type="number" class="form-control" readonly required />
+                                            <label asp-for="Luck"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 text-center">
+                        <button type="button" class="btn btn-lg btn-warning me-3" onclick="rollAll()">
+                            <i class="bi bi-shuffle"></i> Roll All Stats
+                        </button>
+                        <button type="submit" class="btn btn-lg btn-success">
+                            <i class="bi bi-save"></i> Create Save
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .stat-card {
+        transition: transform 0.2s;
+        border: 2px solid rgba(0,0,0,0.1);
+    }
+
+    .stat-card:hover {
+        transform: translateY(-3px);
+    }
+
+    .dice-container {
+        position: relative;
+        height: 100px;
+    }
+
+    .dice {
+        /*width: 80px;*/
+        /*height: 80px;*/
+        position: relative;
+        /*margin: 0 auto;*/
+        transform-style: preserve-3d;
+        transition: transform 1s ease-out;
+
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+        margin: 0 10px;
+    }
+
+    .dice-face {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: white;
+        border: 3px solid #dc3545;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+    }
+
+    .rolling {
+        animation: shake 0.8s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
+
+    @@keyframes shake {
+         10%, 90% { transform: translate3d(-2px, 0, 0) rotate(-10deg); }
+         20%, 80% { transform: translate3d(4px, 0, 0) rotate(12deg); }
+         30%, 50%, 70% { transform: translate3d(-6px, 0, 0) rotate(-15deg); }
+         40%, 60% { transform: translate3d(6px, 0, 0) rotate(15deg); }
+     }
+
+    .btn-roll {
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.1s;
+    }
+
+    .btn-roll:active {
+        transform: scale(0.95);
+    }
+
+    .dice-group {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+    }
+</style>
+
+@section Scripts {
+    <script>
+    function getRandomDieValue() {
+        return Math.floor(Math.random() * 6) + 1;
+    }
+
+    async function rollDie(dieElement, modifier) {
+        return new Promise(resolve => {
+            const face = dieElement.querySelector('.dice-face');
+            const result = getRandomDieValue();
+
+            dieElement.classList.add('rolling');
+            let animationCount = 0;
+
+            const animationInterval = setInterval(() => {
+                const randomValue = Math.floor(Math.random() * 6) + 1;
+                face.textContent = String.fromCodePoint(0x2680 + randomValue - 1);
+                animationCount++;
+
+                if (animationCount > 10) {
+                    clearInterval(animationInterval);
+                    dieElement.classList.remove('rolling');
+
+                    face.textContent = String.fromCodePoint(0x2680 + result - 1);
+                    resolve(result + modifier);
+                }
+            }, 100);
+        });
+    }
+
+    async function rollStamina() {
+        const dice = document.querySelectorAll('#staminaDice .dice');
+        const [die1, die2] = dice;
+
+        const result = await Promise.all([
+            rollDie(die1, 6),
+            rollDie(die2, 6)
+        ]);
+
+
+        document.getElementById('Stamina').value = result.reduce((a, b) => a + b, 0);
+    }
+
+    async function rollDice(diceElement, diceCount, modifier) {
+        return new Promise(resolve => {
+            const faces = diceElement.querySelectorAll('.dice-face');
+            const results = [];
+
+            for (let i = 0; i < diceCount; i++) {
+                results.push(getRandomDieValue());
+            }
+
+            diceElement.classList.add('rolling');
+            let animationCount = 0;
+            const animationInterval = setInterval(() => {
+                faces.forEach((face) => {
+                    const randomValue = Math.floor(Math.random() * 6) + 1;
+                    face.textContent = String.fromCodePoint(0x2680 + randomValue - 1);
+                });
+                animationCount++;
+
+                if (animationCount > 10) {
+                    clearInterval(animationInterval);
+                    diceElement.classList.remove('rolling');
+
+                    faces.forEach((face, index) => {
+                        if (results[index]) {
+                            face.textContent = String.fromCodePoint(0x2680 + results[index] - 1);
+                        }
+                    });
+
+                    const total = results.reduce((a, b) => a + b, 0) + modifier;
+                    resolve(total);
+                }
+            }, 100);
+        });
+    }
+
+    async function rollSkill() {
+        document.getElementById('Skill').value = await rollDie(document.getElementById('skillDice'), 6);
+    }
+
+    //async function rollStamina() {
+      //  document.getElementById('Stamina').value = await rollDice(document.getElementById('staminaDice'), 2, 12);
+    //}
+
+    async function rollLuck() {
+        document.getElementById('Luck').value = await rollDie(document.getElementById('luckDice'), 6);
+    }
+    
+    async function rollAll() {
+        await Promise.all([rollSkill(), rollStamina(), rollLuck()]);
+    }   
+</script>
+}

@@ -29,6 +29,12 @@ public class BookService(IRepository repo, IMapper mapper) : IBookService
         return mapper.Map<ICollection<BookServiceModel>>(userBooks);
     }
 
+    public async Task<BookServiceModel> GetBookByIdAsync(Guid bookId)
+    {
+        Book book = await repo.GetByIdAsync<Book>(bookId);
+        return mapper.Map<BookServiceModel>(book);
+    }
+
     public async Task AddBookToUserAsync(Guid userId, Guid bookId)
     {
         User? user = await repo.AllReadonly<User>(u => u.Id == userId)
@@ -58,13 +64,5 @@ public class BookService(IRepository repo, IMapper mapper) : IBookService
             await repo.AddAsync(userBook);
             await repo.SaveChangesAsync();
         }
-    }
-
-    public async Task<BookServiceModel> GetBookByIdWithSavesAsync(Guid bookId)
-    {
-        Book book = await repo.AllReadonly<Book>(b => b.Id == bookId)
-            .Include(b => b.Saves)
-            .FirstAsync();
-        return mapper.Map<BookServiceModel>(book);
     }
 }

@@ -9,5 +9,6 @@ public class ServiceModelMappingProfile : Profile
     public ServiceModelMappingProfile()
     {
         this.CreateMap<Book, BookServiceModel>();
+        this.CreateMap<Save, SaveServiceModel>();
     }    
 }

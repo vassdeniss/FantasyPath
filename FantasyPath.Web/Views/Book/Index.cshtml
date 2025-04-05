@@ -1,8 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@model BookViewModel
+@model BookSaveViewModel
 
 @{
-    ViewData["Title"] = this.Model.Title;
+    ViewData["Title"] = this.Model.Book.Title;
 }
 
 <div class="container py-4">
@@ -14,22 +14,22 @@
     <div class="row g-4">
         <div class="col-md-4">
             <div class="book-cover-container shadow-sm">
-                <img src="@this.Model.CoverImageUrl"
+                <img src="@this.Model.Book.CoverImageUrl"
                      class="book-cover"
-                     alt="@this.Model.Title">
+                     alt="@this.Model.Book.Title">
             </div>
         </div>
         <div class="col-md-8">
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <h1 class="mb-3">@this.Model.Title</h1>
+                    <h1 class="mb-3">@this.Model.Book.Title</h1>
                     <div class="text-muted mb-4">
-                        <div class="h5">by @this.Model.Author</div>
-                        <div class="small"><i class="bi bi-upc"></i> @this.Model.Isbn</div>
+                        <div class="h5">by @this.Model.Book.Author</div>
+                        <div class="small"><i class="bi bi-upc"></i> @this.Model.Book.Isbn</div>
                     </div>
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h3 class="mb-0">Saved Games</h3>
-                        <a asp-controller="Save" asp-action="Add" asp-route-id="@this.Model.Id"
+                        <a asp-controller="Save" asp-action="Add" asp-route-id="@this.Model.Book.Id"
                            class="btn btn-primary btn-sm">
                             <i class="bi bi-plus-lg"></i> New Save
                         </a>
@@ -54,8 +54,8 @@
                                             <h5 class="card-title mb-3">
                                                 Save #@this.Model.Saves.ToList().IndexOf(save)
                                                 <span class="text-muted small ms-2">
-                                                            @save.Created.ToString("g")
-                                                        </span>
+                                                    @save.Created.ToString("g")
+                                                </span>
                                             </h5>
                                             <div class="d-flex gap-3">
                                                 <div class="stat-pill">
@@ -76,6 +76,12 @@
                                             <a asp-controller="Save" asp-action="Details" asp-route-id="@save.Id"
                                                class="btn btn-outline-primary btn-sm">
                                                 <i class="bi bi-play-circle"></i> Continue
+                                            </a>
+                                            <a asp-controller="Save" asp-action="Delete" 
+                                               asp-route-bookId="@save.BookId"
+                                               asp-route-saveId="@save.Id"
+                                               class="btn btn-outline-danger btn-sm">
+                                                <i class="bi bi-play-circle"></i> Delete
                                             </a>
                                         </div>
                                     </div>

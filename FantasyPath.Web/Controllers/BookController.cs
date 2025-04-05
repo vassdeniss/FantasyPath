@@ -1,22 +1,23 @@
 ﻿using AutoMapper;
 using FantasyPath.Services.Contracts;
 using FantasyPath.Services.Models;
+using FantasyPath.Web.Extensions;
 using FantasyPath.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FantasyPath.Web.Controllers;
 
-public class BookController : Controller
+public class BookController(IBookService bookService, ISaveService saveService, IMapper mapper) : Controller
 {
-    private readonly IBookService _bookService;
-    private readonly IMapper _mapper;
-
-    public BookController(IBookService bookService, IMapper mapper)
-    {
-        this._bookService = bookService;
-        this._mapper = mapper;
-    }
+    // private readonly IBookService _bookService;
+    // private readonly IMapper _mapper;
+    //
+    // public BookController(IBookService bookService, IMapper mapper)
+    // {
+    //     this._bookService = bookService;
+    //     this._mapper = mapper;
+    // }
     
     [HttpGet]
     [Authorize]
@@ -26,10 +27,17 @@ public class BookController : Controller
         {
             return this.BadRequest("Invalid book ID.");
         }
+
+        ICollection<SaveServiceModel> saves = await saveService.GetBookByIdAndUserWithSavesAsync(
+            this.User.Id(),id);
+        BookServiceModel book = await bookService.GetBookByIdAsync(id);
+
+        BookSaveViewModel bookSaveModel = new()
+        {
+            Book = mapper.Map<BookViewModel>(book),
+            Saves = mapper.Map<ICollection<SaveViewModel>>(saves)
+        };
         
-        BookServiceModel dbBook = await this._bookService.GetBookByIdWithSavesAsync(id);
-        BookViewModel book = this._mapper.Map<BookViewModel>(dbBook);
-        
-        return this.View(book);
+        return this.View(bookSaveModel);
     }
 }

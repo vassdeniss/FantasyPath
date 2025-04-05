@@ -9,5 +9,6 @@ public class ViewModelMappingProfile : Profile
     public ViewModelMappingProfile()
     {
         this.CreateMap<BookServiceModel, BookViewModel>();
+        this.CreateMap<SaveServiceModel, SaveViewModel>();
     }
 }

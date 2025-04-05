@@ -11,6 +11,4 @@ public class BookServiceModel
     public string Isbn { get; set; } = null!;
 
     public string CoverImageUrl { get; set; } = null!;
-
-    public ICollection<SaveServiceModel> Saves { get; set; } = new List<SaveServiceModel>();
 }

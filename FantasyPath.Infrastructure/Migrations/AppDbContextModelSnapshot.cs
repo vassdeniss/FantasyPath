@@ -49,7 +49,7 @@ namespace FantasyPath.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Books");
+                    b.ToTable("Books", (string)null);
 
                     b.HasData(
                         new
@@ -262,7 +262,7 @@ namespace FantasyPath.Infrastructure.Migrations
 
                     b.HasIndex("UserId", "BookId");
 
-                    b.ToTable("PassageEntries");
+                    b.ToTable("PassageEntries", (string)null);
                 });
 
             modelBuilder.Entity("FantasyPath.Infrastructure.Models.Save", b =>
@@ -299,7 +299,7 @@ namespace FantasyPath.Infrastructure.Migrations
 
                     b.HasIndex("UserId", "BookId");
 
-                    b.ToTable("Saves");
+                    b.ToTable("Saves", (string)null);
                 });
 
             modelBuilder.Entity("FantasyPath.Infrastructure.Models.User", b =>
@@ -380,7 +380,7 @@ namespace FantasyPath.Infrastructure.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.ToTable("UserBooks");
+                    b.ToTable("UserBooks", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>

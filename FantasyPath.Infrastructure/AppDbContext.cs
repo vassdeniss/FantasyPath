@@ -6,10 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FantasyPath.Infrastructure;
 
-public class AppDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
+public class AppDbContext(DbContextOptions<AppDbContext> options)
+    : IdentityDbContext<User, IdentityRole<Guid>, Guid>(options)
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-    
     public DbSet<Book> Books => Set<Book>();
     public DbSet<UserBook> UserBooks => Set<UserBook>();
     public DbSet<Save> Saves => Set<Save>();
@@ -32,12 +31,6 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
         
         builder.Entity<Save>()
             .HasIndex(s => new { s.UserId, s.BookId });
-        
-        builder.Entity<Save>()
-            .HasOne(s => s.Book)
-            .WithMany(b => b.Saves)
-            .HasForeignKey(s => s.BookId)
-            .OnDelete(DeleteBehavior.Cascade);
         
         builder.Entity<Save>()
             .HasOne(s => s.User)
