@@ -1,0 +1,106 @@
+﻿@model SaveViewModel
+
+@{
+    ViewData["Title"] = "Edit Save";
+}
+
+<div class="container py-4">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h2 class="mb-4">Edit Save</h2>
+            <form asp-controller="Save" asp-action="Edit" method="post">
+                <input type="hidden" asp-for="@this.Model.Id" />
+                <input type="hidden" asp-for="@this.Model.BookId" />
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="@this.Model.Skill" class="form-label">Skill</label>
+                            <input asp-for="@this.Model.Skill" class="form-control" />
+                            <span asp-validation-for="@this.Model.Skill" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="@this.Model.Stamina" class="form-label">Stamina</label>
+                            <input asp-for="@this.Model.Stamina" class="form-control" />
+                            <span asp-validation-for="@this.Model.Stamina" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="@this.Model.Luck" class="form-label">Luck</label>
+                            <input asp-for="@this.Model.Luck" class="form-control" />
+                            <span asp-validation-for="@this.Model.Luck" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">Inventory</label>
+                    <div id="inventoryItems" class="mb-2">
+                        @foreach (string item in this.Model.Inventory)
+                        {
+                            <div class="inventory-item d-inline-block me-2 mb-2">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">@item</span>
+                                    <button type="button" class="btn btn-danger" onclick="removeInventoryItem(this)">
+                                        <i class="bi bi-x"></i>
+                                    </button>
+                                    <input type="hidden" name="Inventory" value="@item" />
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="newInventoryItem" class="form-control" 
+                               placeholder="Add new item..." />
+                        <button type="button" class="btn btn-primary" onclick="addInventoryItem()">
+                            <i class="bi bi-plus"></i> Add Item
+                        </button>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end gap-2">
+                    <a asp-controller="Book" asp-action="Index" asp-route-id="@this.Model.BookId" 
+                       class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-save"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function addInventoryItem() {
+            const input = document.getElementById('newInventoryItem');
+            const itemValue = input.value.trim();
+            
+            if (itemValue) {
+                const inventoryDiv = document.getElementById('inventoryItems');
+                
+                const newItem = document.createElement('div');
+                newItem.className = 'inventory-item d-inline-block me-2 mb-2';
+                newItem.innerHTML = `
+                    <div class="input-group">
+                        <span class="input-group-text bg-light">${itemValue}</span>
+                        <button type="button" class="btn btn-danger" onclick="removeInventoryItem(this)">
+                            <i class="bi bi-x"></i>
+                        </button>
+                        <input type="hidden" name="Inventory" value="${itemValue}" />
+                    </div>
+                `;
+                
+                inventoryDiv.appendChild(newItem);
+                input.value = '';
+            }
+        }
+
+        function removeInventoryItem(button) {
+            const itemDiv = button.closest('.inventory-item');
+            itemDiv.remove();
+        }
+    </script>
+
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,4 +1,5 @@
-﻿using FantasyPath.Infrastructure.Configurations;
+﻿using System.Text.Json;
+using FantasyPath.Infrastructure.Configurations;
 using FantasyPath.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -22,12 +23,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
         
         builder.Entity<UserBook>()
             .HasKey(ub => new { ub.UserId, ub.BookId });
-        
+
         builder.Entity<Save>()
             .Property(s => s.Inventory)
+            .HasColumnType("nvarchar(max)")
             .HasConversion(
-                v => v.ToString(),
-                v => v);   
+                s => JsonSerializer.Serialize(s, (JsonSerializerOptions)null),
+                s => JsonSerializer.Deserialize<List<string>>(s, (JsonSerializerOptions)null));
         
         builder.Entity<Save>()
             .HasIndex(s => new { s.UserId, s.BookId });

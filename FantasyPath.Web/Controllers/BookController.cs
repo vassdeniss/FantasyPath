@@ -10,15 +10,6 @@ namespace FantasyPath.Web.Controllers;
 
 public class BookController(IBookService bookService, ISaveService saveService, IMapper mapper) : Controller
 {
-    // private readonly IBookService _bookService;
-    // private readonly IMapper _mapper;
-    //
-    // public BookController(IBookService bookService, IMapper mapper)
-    // {
-    //     this._bookService = bookService;
-    //     this._mapper = mapper;
-    // }
-    
     [HttpGet]
     [Authorize]
     public async Task<IActionResult> Index(Guid id)

@@ -14,7 +14,7 @@ public class SaveServiceModel
 
     public int Luck { get; set; }
 
-    public string Inventory { get; set; } = "{}";
+    public ICollection<string> Inventory { get; set; } = new List<string>();
     
     public DateTime Created { get; set; } = DateTime.Now;
 }
