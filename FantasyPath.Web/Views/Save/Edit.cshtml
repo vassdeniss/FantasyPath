@@ -34,30 +34,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="mb-4">
-                    <label class="form-label">Inventory</label>
-                    <div id="inventoryItems" class="mb-2">
-                        @foreach (string item in this.Model.Inventory)
-                        {
-                            <div class="inventory-item d-inline-block me-2 mb-2">
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light">@item</span>
-                                    <button type="button" class="btn btn-danger" onclick="removeInventoryItem(this)">
-                                        <i class="bi bi-x"></i>
-                                    </button>
-                                    <input type="hidden" name="Inventory" value="@item" />
-                                </div>
-                            </div>
-                        }
-                    </div>
-                    <div class="input-group">
-                        <input type="text" id="newInventoryItem" class="form-control" 
-                               placeholder="Add new item..." />
-                        <button type="button" class="btn btn-primary" onclick="addInventoryItem()">
-                            <i class="bi bi-plus"></i> Add Item
-                        </button>
-                    </div>
-                </div>
+                @await Html.PartialAsync("_InventoryPartial", this.Model.Inventory)
                 <div class="d-flex justify-content-end gap-2">
                     <a asp-controller="Book" asp-action="Index" asp-route-id="@this.Model.BookId" 
                        class="btn btn-secondary">Cancel</a>
@@ -109,7 +86,8 @@
     </div>
 </div>
 
-<script>
+<script src="~/js/inventory.js"></script>
+<script>    
     let currentCombat = {
         isActive: false,
         enemySkill: 0,
@@ -205,35 +183,6 @@
     function updateCombatControls() {
         const luck = parseInt(document.getElementById('Luck').value);
         document.getElementById('useLuckBtn').disabled = luck < 1 || !currentCombat.isActive;
-    }
-
-    function addInventoryItem() {
-        const input = document.getElementById('newInventoryItem');
-        const itemValue = input.value.trim();
-
-        if (itemValue) {
-            const inventoryDiv = document.getElementById('inventoryItems');
-
-            const newItem = document.createElement('div');
-            newItem.className = 'inventory-item d-inline-block me-2 mb-2';
-            newItem.innerHTML = `
-                    <div class="input-group">
-                        <span class="input-group-text bg-light">${itemValue}</span>
-                        <button type="button" class="btn btn-danger" onclick="removeInventoryItem(this)">
-                            <i class="bi bi-x"></i>
-                        </button>
-                        <input type="hidden" name="Inventory" value="${itemValue}" />
-                    </div>
-                `;
-
-            inventoryDiv.appendChild(newItem);
-            input.value = '';
-        }
-    }
-
-    function removeInventoryItem(button) {
-        const itemDiv = button.closest('.inventory-item');
-        itemDiv.remove();
     }
 
 </script>

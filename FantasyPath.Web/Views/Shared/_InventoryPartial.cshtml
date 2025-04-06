@@ -1,0 +1,25 @@
+﻿@model ICollection<string>
+
+<div class="mb-4">
+    <label class="form-label">Inventory</label>
+    <div id="inventoryItems" class="mb-2">
+        @foreach (string item in Model)
+        {
+        <div class="inventory-item d-inline-block me-2 mb-2">
+            <div class="input-group">
+                <span class="input-group-text bg-light">@item</span>
+                <button type="button" class="btn btn-danger" onclick="removeInventoryItem(this)">
+                    <i class="bi bi-x"></i>
+                </button>
+                <input type="hidden" name="Inventory" value="@item" />
+            </div>
+        </div>
+        }
+    </div>
+    <div class="input-group">
+        <input type="text" id="newInventoryItem" class="form-control" placeholder="Add new item..." />
+        <button type="button" class="btn btn-primary" onclick="addInventoryItem()">
+            <i class="bi bi-plus"></i> Add Item
+        </button>
+    </div>
+</div>
