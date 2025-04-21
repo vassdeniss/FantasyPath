@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace FantasyPath.Infrastructure;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options)
-    : IdentityDbContext<User, IdentityRole<Guid>, Guid>(options)
+        : IdentityDbContext<User, IdentityRole<Guid>, Guid>(options)
 {
     public DbSet<Book> Books => Set<Book>();
     public DbSet<UserBook> UserBooks => Set<UserBook>();

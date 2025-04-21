@@ -74,7 +74,7 @@
                         <button class="btn btn-warning" id="useLuckBtn" disabled onclick="testLuck()">
                             <i class="bi bi-stars"></i> Use Luck
                         </button>
-                        <button class="btn btn-secondary" onclick="resetCombat()">
+                        <button class="btn btn-secondary" onclick="flee()">
                             <i class="bi bi-escape"></i> Flee
                         </button>
                     </div>
@@ -87,17 +87,29 @@
 </div>
 
 <script src="~/js/inventory.js"></script>
-<script>    
+<script>
+    const elements = {
+        skill: document.getElementById('Skill'),
+        stamina: document.getElementById('Stamina'),
+        luck: document.getElementById('Luck'),
+        enemySkill: document.getElementById('enemySkill'),
+        enemyStamina: document.getElementById('enemyStamina'),
+        currentEnemyStamina: document.getElementById('currentEnemyStamina'),
+        combatLog: document.getElementById('combatLog'),
+        useLuckBtn: document.getElementById('useLuckBtn')
+    };
+        
     let currentCombat = {
         isActive: false,
         enemySkill: 0,
         initialEnemyStamina: 0,
-        currentEnemyStamina: 0
+        currentEnemyStamina: 0,
+        lastDamage: 0
     };
 
     function startCombat() {
-        const enemySkill = parseInt(document.getElementById('enemySkill').value);
-        const enemyStamina = parseInt(document.getElementById('enemyStamina').value);
+        const enemySkill = parseInt(elements.enemySkill.value);
+        const enemyStamina = parseInt(elements.enemyStamina.value);
 
         if (!enemySkill || !enemyStamina) {
             alert("Please enter enemy Skill and Stamina!");
@@ -113,12 +125,13 @@
             isActive: true,
             enemySkill,
             initialEnemyStamina: enemyStamina,
-            currentEnemyStamina: enemyStamina
+            currentEnemyStamina: enemyStamina,
+            lastDamage: 0
         };
 
-        document.getElementById('currentEnemyStamina').value = enemyStamina;
-        document.getElementById('combatLog').style.display = 'block';
-        document.getElementById('combatLog').innerHTML = '';
+        elements.currentEnemyStamina.value = enemyStamina;
+        elements.combatLog.style.display = 'block';
+        elements.combatLog.innerHTML = '';
         performCombatRound();
     }
 
@@ -127,8 +140,15 @@
     }
 
     function updateCombatLog(message) {
-        const log = document.getElementById('combatLog');
-        log.innerHTML = `<div class="combat-log-entry">${message}</div>` + log.innerHTML;
+        elements.combatLog.insertAdjacentHTML('afterbegin',
+            `<div class="combat-log-entry">${message}</div>`
+        );
+    }
+
+    function takeHealth(currentHealth, amount, element) {
+        const newHealth = Math.max(currentHealth - amount, 0);
+        elements[element].value = newHealth;
+        return newHealth;
     }
 
     function performCombatRound() {
@@ -136,8 +156,8 @@
 
         const playerRoll = roll2d6();
         const enemyRoll = roll2d6();
-        const playerSkill = parseInt(document.getElementById('Skill').value);
-        const playerStamina = parseInt(document.getElementById('Stamina').value);
+        const playerSkill = parseInt(elements.skill.value);
+        const playerStamina = parseInt(elements.stamina.value);
         const playerTotal = playerSkill + playerRoll;
         const enemyTotal = currentCombat.enemySkill + enemyRoll;
 
@@ -146,18 +166,18 @@
             <div>Enemy: ${enemyRoll} Roll + ${currentCombat.enemySkill} Skill = <strong>${enemyTotal}</strong></div>`;
 
         if (playerTotal > enemyTotal) {
-            currentCombat.currentEnemyStamina -= 2;
-            document.getElementById('currentEnemyStamina').value = Math.max(currentCombat.currentEnemyStamina, 0);
+            currentCombat.currentEnemyStamina = takeHealth(currentCombat.currentEnemyStamina, 2, 'currentEnemyStamina');
             logEntry += `<div class="text-success">You strike the enemy! (-2 Stamina)</div>`;
+            currentCombat.lastDamage = 0;
 
             if (currentCombat.currentEnemyStamina <= 0) {
                 logEntry += `<div class="text-success fw-bold">ENEMY DEFEATED!</div>`;
                 resetCombat();
             }
         } else if (enemyTotal > playerTotal) {
-            const newStamina = Math.max(playerStamina - 2, 0);
-            document.getElementById('Stamina').value = newStamina;
+            const newStamina = takeHealth(playerStamina, 2, 'stamina');
             logEntry += `<div class="text-danger">Enemy hits you! (-2 Stamina)</div>`;
+            currentCombat.lastDamage = 2;
 
             if (newStamina <= 0) {
                 logEntry += `<div class="text-danger fw-bold">GAME OVER! YOU HAVE DIED!</div>`;
@@ -172,17 +192,77 @@
         updateCombatControls();
     }
 
+    function flee() {
+        currentCombat.lastDamage = 2;
+        const playerStamina = parseInt(elements.stamina.value);
+        const newStamina = takeHealth(playerStamina, 2, 'stamina');
+
+        let logEntry = `<div class="combat-round mb-2">
+            <div class="text-info">You flee battle! (-2 Stamina)</div>`;        
+
+        if (playerStamina - 2 <= 0) {
+            logEntry += `<div class="text-danger fw-bold">GAME OVER! YOU HAVE DIED!</div>`;
+            resetCombat();
+        } else {
+            logEntry += `<div>Escaped with ${newStamina} Stamina remaining</div>`;
+            updateCombatControls();
+        }
+
+        logEntry += `</div>`;
+        updateCombatLog(logEntry);
+    }
+
+    function testLuck() {
+        const luck = parseInt(elements.luck.value);
+        const luckRoll = roll2d6();
+        let logEntry = `<div class="combat-round mb-2">Luck Test: ${luckRoll} `;
+        
+        if (luckRoll <= luck) {
+            logEntry += "(Success!) ";
+            
+            if (currentCombat.lastDamage > 0) {
+                takeHealth(parseInt(elements.stamina.value), -1, 'stamina');
+                logEntry += `<div class="text-success">The blow was weak! (+1 Stamina)</div>`;
+            } else {
+                currentCombat.currentEnemyStamina = takeHealth(currentCombat.currentEnemyStamina, 2, 'currentEnemyStamina');
+                logEntry += `<div class="text-success">You strike the enemy for more damage! (-2 Stamina)</div>`;
+            }
+        } else {
+            logEntry += "(Failure!) ";
+
+            if (currentCombat.lastDamage > 0) {
+                takeHealth(parseInt(elements.stamina.value), 1, 'stamina');
+                logEntry += `<div class="text-danger">That blow went deep! (-1 Stamina)</div>`;
+            } else {
+                currentCombat.currentEnemyStamina = takeHealth(currentCombat.currentEnemyStamina, -1, 'currentEnemyStamina');
+                logEntry += `<div class="text-danger">You stumble and only graze it! (+1 Stamina)</div>`;
+            }
+        }
+
+        elements.luck.value = luck - 1;
+
+        if (currentCombat.currentEnemyStamina <= 0) {
+            logEntry += `<div class="text-success fw-bold">ENEMY DEFEATED!</div>`;
+            resetCombat();
+        } else if (parseInt(document.getElementById('Stamina').value) <= 0) {
+            logEntry += `<div class="text-danger fw-bold">GAME OVER! YOU HAVE DIED!</div>`;
+            resetCombat();   
+        }
+
+        logEntry += `</div>`;
+        updateCombatLog(logEntry);
+        updateCombatControls();
+    }
+
     function resetCombat() {
         currentCombat.isActive = false;
-        document.getElementById('currentEnemyStamina').value = '';
-        document.getElementById('combatLog').innerHTML = '';
-        document.getElementById('enemySkill').value = '';
-        document.getElementById('enemyStamina').value = '';
+        elements.currentEnemyStamina.value = '';
+        elements.combatLog.innerHTML = '';
+        elements.enemySkill.value = '';
+        elements.enemyStamina.value = '';
     }
 
     function updateCombatControls() {
-        const luck = parseInt(document.getElementById('Luck').value);
-        document.getElementById('useLuckBtn').disabled = luck < 1 || !currentCombat.isActive;
+        elements.useLuckBtn.disabled = parseInt(elements.luck.value) < 1 || !currentCombat.isActive;
     }
-
 </script>
