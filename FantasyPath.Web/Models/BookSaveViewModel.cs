@@ -2,7 +2,7 @@
 
 public class BookSaveViewModel
 {
-    public BookViewModel Book { get; set; }
+    public BookViewModel Book { get; set; } = null!;
     
-    public ICollection<SaveViewModel> Saves { get; set; }
+    public ICollection<SaveViewModel> Saves { get; set; } = null!;
 }
