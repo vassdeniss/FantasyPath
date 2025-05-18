@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace FantasyPath.Infrastructure.Models;
 
@@ -7,5 +6,5 @@ public class User : IdentityUser<Guid>
 {
     public virtual ICollection<UserBook> UserBooks { get; set; } = new HashSet<UserBook>();
     
-    public virtual ICollection<Save> Saves { get; set; } = new HashSet<Save>();    
+    public virtual ICollection<Save> Saves { get; } = new HashSet<Save>();    
 }

@@ -2,15 +2,15 @@
 
 public class BookViewModel
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
         
-    public string Title { get; set; } = null!;
+    public string Title { get; init; } = null!;
         
-    public string Author { get; set; } = null!;
+    public string Author { get; init; } = null!;
         
-    public string Isbn { get; set; } = null!;
+    public string Isbn { get; init; } = null!;
         
-    public string CoverImageUrl { get; set; } = null!;
+    public string CoverImageUrl { get; init; } = null!;
 
-    public ICollection<SaveViewModel> Saves { get; set; } = new List<SaveViewModel>();
+    public ICollection<SaveViewModel> Saves { get; init; } = new List<SaveViewModel>();
 }

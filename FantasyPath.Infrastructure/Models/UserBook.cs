@@ -4,11 +4,13 @@ namespace FantasyPath.Infrastructure.Models;
 
 public class UserBook
 {
-    [Required] public Guid UserId { get; set; }
+    [Required] public Guid UserId { get; init; }
     
-    [Required] public Guid BookId { get; set; }
-    
-    public User User { get; set; } = null!;
+    [Required] public Guid BookId { get; init; }
 
-    public Book Book { get; set; } = null!;
+    public string GraphData { get; set; } = "";
+    
+    public User User { get; init; } = null!;
+
+    public Book Book { get; init; } = null!;
 }

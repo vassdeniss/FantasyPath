@@ -2,17 +2,19 @@
 
 public class SaveViewModel
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
     
-    public Guid BookId { get; set; }
+    public Guid BookId { get; init; }
 
-    public int Skill { get; set; }
+    public int Skill { get; init; }
 
-    public int Stamina { get; set; }
+    public int Stamina { get; init; }
 
-    public int Luck { get; set; }
-
-    public ICollection<string> Inventory { get; set; } = new List<string>();
+    public int Luck { get; init; }
     
-    public DateTime Created { get; set; } = DateTime.Now;
+    public string GraphData { get; init; }
+
+    public ICollection<string> Inventory { get; init; } = new List<string>();
+    
+    public DateTime Created { get; init; } = DateTime.Now;
 }

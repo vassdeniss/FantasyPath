@@ -44,8 +44,6 @@ public class SaveService(IRepository repo, IMapper mapper) : ISaveService
     {
         Save save = await repo.GetByIdAsync<Save>(id);
         
-        // todo: could be null
-        
         save.Skill = skill;
         save.Stamina = stamina;
         save.Luck = luck;

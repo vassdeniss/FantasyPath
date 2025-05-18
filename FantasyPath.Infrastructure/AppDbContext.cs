@@ -13,7 +13,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
     public DbSet<Book> Books => Set<Book>();
     public DbSet<UserBook> UserBooks => Set<UserBook>();
     public DbSet<Save> Saves => Set<Save>();
-    public DbSet<PassageEntry> PassageEntries => Set<PassageEntry>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -39,26 +38,5 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
             .WithMany(u => u.Saves)
             .HasForeignKey(s => s.UserId)
             .OnDelete(DeleteBehavior.Cascade);
-        
-        builder.Entity<PassageEntry>()
-            .HasOne(p => p.Book)
-            .WithMany()
-            .HasForeignKey(p => p.BookId)
-            .OnDelete(DeleteBehavior.Cascade);
-        
-        builder.Entity<PassageEntry>()
-            .HasOne(p => p.User)
-            .WithMany()
-            .HasForeignKey(p => p.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
-        
-        builder.Entity<PassageEntry>()
-            .HasIndex(p => new { p.UserId, p.BookId });
-        
-        builder.Entity<PassageEntry>()
-            .Property(p => p.Details)
-            .HasConversion(
-                v => v,
-                v => v);
     }
 }
