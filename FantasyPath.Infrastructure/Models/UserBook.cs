@@ -8,7 +8,7 @@ public class UserBook
     
     [Required] public Guid BookId { get; init; }
 
-    public string GraphData { get; set; } = "";
+    public string? GraphData { get; set; }
     
     public User User { get; init; } = null!;
 

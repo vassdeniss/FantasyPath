@@ -4,6 +4,7 @@ using FantasyPath.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FantasyPath.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250518142419_AddedGraphData")]
+    partial class AddedGraphData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,7 +57,7 @@ namespace FantasyPath.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("057f1764-c08e-4369-a993-eb18f6580be9"),
+                            Id = new Guid("a29c7640-c463-4730-835d-eed8889d1d2c"),
                             Author = "Steve Jackson & Ian Livingstone",
                             CoverImageUrl = "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1439110049i/26066622.jpg",
                             Isbn = "9780743475112",
@@ -62,7 +65,7 @@ namespace FantasyPath.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("0e5eca15-2bd9-4613-b109-dc864d78c5d5"),
+                            Id = new Guid("cc589dcb-4352-455d-931c-f41beb1162a3"),
                             Author = "Steve Jackson",
                             CoverImageUrl = "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1181233137i/1129656.jpg",
                             Isbn = "9780140316032 ",
@@ -70,7 +73,7 @@ namespace FantasyPath.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("74cc5783-ff29-40e4-a505-e07bd308c990"),
+                            Id = new Guid("0457c45a-07b7-44ed-87e3-7ed783a76eba"),
                             Author = "Ian Livingstone",
                             CoverImageUrl = "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1439110513i/26066654.jpg",
                             Isbn = "9781840464290",
@@ -78,7 +81,7 @@ namespace FantasyPath.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("151fa4f0-3cdb-488a-8f14-903e3b9fc60e"),
+                            Id = new Guid("a7204800-d2f4-4134-9d38-529ebb064399"),
                             Author = "Steve Jackson",
                             CoverImageUrl = "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1357726081i/17228871.jpg",
                             Isbn = "9781840465525",
@@ -86,7 +89,7 @@ namespace FantasyPath.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d9b11acc-2c18-4c56-a917-90d1e17a0788"),
+                            Id = new Guid("136ee430-9e34-4576-b9f1-06155edf725a"),
                             Author = "Ian Livingstone",
                             CoverImageUrl = "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1439126001i/26067801.jpg",
                             Isbn = "9780140316452",
@@ -94,7 +97,7 @@ namespace FantasyPath.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d8f84543-c62d-48ae-87c7-42b50b0dbc17"),
+                            Id = new Guid("4cba6ce7-7b15-4b53-81ba-d07f08f0235c"),
                             Author = "Ian Livingstone",
                             CoverImageUrl = "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1177021348i/675314.jpg",
                             Isbn = "9780140317084",
@@ -102,7 +105,7 @@ namespace FantasyPath.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("accddc2f-b248-4a77-b10e-ede1235f1e2d"),
+                            Id = new Guid("7e9bb05e-8393-43d0-8550-6806c410a82e"),
                             Author = "Ian Livingstone",
                             CoverImageUrl = "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1439111136i/26066685.jpg",
                             Isbn = "9780140317435",
@@ -110,7 +113,7 @@ namespace FantasyPath.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("da2778fa-7e17-4cd4-8ab0-c476f2f078e4"),
+                            Id = new Guid("03ced8a7-d423-42af-9083-e3cd9c0029db"),
                             Author = "Steve Jackson",
                             CoverImageUrl = "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1328038532i/1129804.jpg",
                             Isbn = "9780140318296",
@@ -118,7 +121,7 @@ namespace FantasyPath.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("c4760132-f81d-47a7-82d9-7d57cdc72f9e"),
+                            Id = new Guid("3edcc1ad-36c5-4dbc-b71e-07175792d4d5"),
                             Author = "Ian Livingstone",
                             CoverImageUrl = "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1439125616i/26067773.jpg",
                             Isbn = "9780140318302",
@@ -126,7 +129,7 @@ namespace FantasyPath.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("68e1f645-23fb-4e1a-9adc-63f4fc6bd0f5"),
+                            Id = new Guid("375f868c-15b0-452f-a6a8-cdc283750eaa"),
                             Author = "Steve Jackson",
                             CoverImageUrl = "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1457004279i/1261049.jpg",
                             Isbn = "9780140318319",
@@ -134,7 +137,7 @@ namespace FantasyPath.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("dd501e0a-4320-4f60-8a23-32e8a84f4b2f"),
+                            Id = new Guid("61a6a162-2ecc-44c3-9072-9ce496b4a9fc"),
                             Author = "Mark Smith & Jamie Thomson",
                             CoverImageUrl = "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1439125202i/26067637.jpg",
                             Isbn = "9781840465662",
@@ -142,7 +145,7 @@ namespace FantasyPath.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("15e9db48-3842-4a3d-9a55-d6cbcf2c5cb1"),
+                            Id = new Guid("ec0b3ed6-83b4-4a9e-a3df-ba5276d39da5"),
                             Author = "Andrew Chapman",
                             CoverImageUrl = "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1439124891i/26067557.jpg",
                             Isbn = "9780440981497",
@@ -150,7 +153,7 @@ namespace FantasyPath.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("b93d574a-365b-49bf-9192-006c93f172a8"),
+                            Id = new Guid("3bc80bcd-293e-4241-98b9-08669efbe3f7"),
                             Author = "Ian Livingstone",
                             CoverImageUrl = "https://cybeswebsite.com/wp-content/uploads/2019/01/Figfan13n-186x300.jpg",
                             Isbn = "9780140317107",
@@ -158,7 +161,7 @@ namespace FantasyPath.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("4d9820bb-55a6-4343-b5ac-43118ea3a100"),
+                            Id = new Guid("2ff7fb7d-8640-45ec-b742-d1898f87e40a"),
                             Author = "Ian Livingstone",
                             CoverImageUrl = "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1439121250i/26067291.jpg",
                             Isbn = "9781840465280",
@@ -166,7 +169,7 @@ namespace FantasyPath.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("ba57a17b-214c-46f7-845a-602dfb15cf1c"),
+                            Id = new Guid("dce14443-51ab-4934-aed6-3e6b0314009d"),
                             Author = "Andrew Chapman",
                             CoverImageUrl = "https://static.wikia.nocookie.net/fightingfantasy/images/e/ee/15_06.jpg/revision/latest/scale-to-width-down/1000?cb=20191223080002",
                             Isbn = "9780440974079",
@@ -174,7 +177,7 @@ namespace FantasyPath.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("9b23b246-1582-4357-bc60-116fc4a58b27"),
+                            Id = new Guid("854b838e-3780-4f3b-a646-a922a8827101"),
                             Author = "Andrew Chapman",
                             CoverImageUrl = "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1439121633i/1261180.jpg",
                             Isbn = "9780440977087",
@@ -182,7 +185,7 @@ namespace FantasyPath.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("1fceca92-b2f5-40ae-a012-5dae708a40ae"),
+                            Id = new Guid("42cfdbfa-dd47-45d5-9184-08d20cd6ce8f"),
                             Author = "Steve Jackson",
                             CoverImageUrl = "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1188764984i/1817973.jpg",
                             Isbn = "9781840465273",
@@ -190,7 +193,7 @@ namespace FantasyPath.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("0b5e19b8-9d10-4c44-9712-95a354d34e29"),
+                            Id = new Guid("5dac7d67-6dd0-41bc-887b-08ddd44468a2"),
                             Author = "Robin Waterfield",
                             CoverImageUrl = "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1232604646i/6123272.jpg",
                             Isbn = "99780140319521",
@@ -198,7 +201,7 @@ namespace FantasyPath.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("3b9bf35e-7987-48af-bd93-3a8b6d706eed"),
+                            Id = new Guid("fa420875-3b25-459a-9546-dc11c4534186"),
                             Author = "Steve Jackson & Ian Livingstone",
                             CoverImageUrl = "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1439124598i/26067514.jpg",
                             Isbn = "9780440918431",
@@ -206,7 +209,7 @@ namespace FantasyPath.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("0d598d50-874b-465b-be50-bb3518cd5342"),
+                            Id = new Guid("c21ff243-0385-47e2-9f03-11901ad88533"),
                             Author = "Mark Smith & Jamie Thomson",
                             CoverImageUrl = "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1439123656i/1029657.jpg",
                             Isbn = "9781840467321",
@@ -214,7 +217,7 @@ namespace FantasyPath.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("ea3ddaf3-1781-4447-bc3b-848375b1f3c1"),
+                            Id = new Guid("2eb036dc-0836-4f22-8cd9-a24542c093c8"),
                             Author = "Ian Livingstone",
                             CoverImageUrl = "https://static.wikia.nocookie.net/fightingfantasy/images/1/14/21_11.jpg/revision/latest/scale-to-width-down/1000?cb=20191223064046",
                             Isbn = "9780140320398",
@@ -222,7 +225,7 @@ namespace FantasyPath.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("a6a3be65-07fc-4ffb-bac5-e0b198988f9b"),
+                            Id = new Guid("96a7f4e2-867b-4786-af23-e26517ce04ec"),
                             Author = "Steve Jackson",
                             CoverImageUrl = "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1344077625i/1261601.jpg",
                             Isbn = "9780140321524",
@@ -342,6 +345,7 @@ namespace FantasyPath.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("GraphData")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId", "BookId");
