@@ -10,7 +10,7 @@
         <div class="card-body">
             <h1 class="mb-4">Create New Adventure</h1>
             <form asp-controller="Save" asp-action="Add" method="post">
-                <input type="hidden" asp-for="BookId" value="@this.Model.BookId" />
+                <input type="hidden" asp-for="BookId" />
                 <div class="row g-4">
                     <div class="col-12">
                         <div class="card stat-card">
@@ -32,7 +32,7 @@
                                             Your fighting expertise - Roll 1 die and add 6
                                         </p>
                                         <div class="form-floating">
-                                            <input asp-for="Skill" type="number" class="form-control" readonly required />
+                                            <input asp-for="Skill" id="Skill" type="number" class="form-control" readonly required />
                                             <label asp-for="Skill"></label>
                                         </div>
                                     </div>
@@ -65,7 +65,7 @@
                                             Your endurance - Roll 2 dice and add 12
                                         </p>
                                         <div class="form-floating">
-                                            <input asp-for="Stamina" type="number" class="form-control" readonly required />
+                                            <input asp-for="Stamina" id="Stamina" type="number" class="form-control" readonly required />
                                             <label asp-for="Stamina"></label>
                                         </div>
                                     </div>
@@ -93,7 +93,7 @@
                                             Your fortune - Roll 1 die and add 6
                                         </p>
                                         <div class="form-floating">
-                                            <input asp-for="Luck" type="number" class="form-control" readonly required />
+                                            <input asp-for="Luck" id="Luck" type="number" class="form-control" readonly required />
                                             <label asp-for="Luck"></label>
                                         </div>
                                     </div>

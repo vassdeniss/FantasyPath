@@ -12,8 +12,6 @@ public class SaveViewModel
 
     public int Luck { get; init; }
     
-    public string GraphData { get; init; }
-
     public ICollection<string> Inventory { get; init; } = new List<string>();
     
     public DateTime Created { get; init; } = DateTime.Now;

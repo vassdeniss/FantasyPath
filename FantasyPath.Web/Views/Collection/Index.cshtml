@@ -58,31 +58,7 @@ ViewData["Title"] = "My Gamebook Collection";
     }
 </div>
 
-<style>
-    .book-cover-container {
-        width: 100%;
-        height: 400px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #f8f9fa;
-        border-radius: 4px;
-        overflow: hidden;
-    }
-
-    .book-cover {
-        max-height: 100%;
-        max-width: 100%;
-        object-fit: contain;
-    }
-
-    .card {
-        transition: transform 0.2s, box-shadow 0.2s;
-        border: none;
-    }
-
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-    }
-</style>
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/collection.css" />
+}

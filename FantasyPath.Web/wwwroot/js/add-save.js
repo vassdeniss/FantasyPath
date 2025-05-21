@@ -26,43 +26,6 @@ async function rollDie(dieElement, modifier) {
     });
 }
 
-
-
-async function rollDice(diceElement, diceCount, modifier) {
-    return new Promise(resolve => {
-        const faces = diceElement.querySelectorAll('.dice-face');
-        const results = [];
-
-        for (let i = 0; i < diceCount; i++) {
-            results.push(getRandomDieValue());
-        }
-
-        diceElement.classList.add('rolling');
-        let animationCount = 0;
-        const animationInterval = setInterval(() => {
-            faces.forEach((face) => {
-                const randomValue = Math.floor(Math.random() * 6) + 1;
-                face.textContent = String.fromCodePoint(0x2680 + randomValue - 1);
-            });
-            animationCount++;
-
-            if (animationCount > 10) {
-                clearInterval(animationInterval);
-                diceElement.classList.remove('rolling');
-
-                faces.forEach((face, index) => {
-                    if (results[index]) {
-                        face.textContent = String.fromCodePoint(0x2680 + results[index] - 1);
-                    }
-                });
-
-                const total = results.reduce((a, b) => a + b, 0) + modifier;
-                resolve(total);
-            }
-        }, 100);
-    });
-}
-
 async function rollSkill() {
     document.getElementById('Skill').value = await rollDie(document.getElementById('skillDice'), 6);
 }

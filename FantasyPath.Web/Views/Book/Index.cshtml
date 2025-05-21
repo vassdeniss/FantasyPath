@@ -29,10 +29,17 @@
                     </div>
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h3 class="mb-0">Saved Games</h3>
-                        <a asp-controller="Save" asp-action="Add" asp-route-id="@this.Model.Book.Id"
-                           class="btn btn-primary btn-sm">
-                            <i class="bi bi-plus-lg"></i> New Save
-                        </a>
+                        <div class="d-flex gap-3 justify-content-between align-items-center">
+                            <a asp-controller="Save" asp-action="Add" asp-route-id="@this.Model.Book.Id"
+                               class="btn btn-primary btn-sm">
+                                <i class="bi bi-plus-lg"></i> New Save
+                            </a>
+                            <a asp-controller="Graph" asp-action="Index" asp-route-bookId="@this.Model.Book.Id" 
+                               asp-route-bookName="@this.Model.Book.Title"
+                               class="btn btn-info btn-sm">
+                                <i class="bi bi-diagram-3"></i> Graph Manager
+                            </a>
+                        </div>
                     </div>
 
                     @if (!this.Model.Saves.Any())
@@ -98,48 +105,7 @@
     </div>
 </div>
 
-<style>
-    .save-card {
-        transition: transform 0.2s, box-shadow 0.2s;
-        border: 1px solid rgba(0, 0, 0, 0.125);
-    }
-
-    .save-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
-    }
-
-    .stat-pill {
-        background-color: #f8f9fa;
-        border-radius: 20px;
-        padding: 0.25rem 0.75rem;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .stat-label {
-        font-size: 0.75rem;
-        color: #6c757d;
-    }
-
-    .stat-value {
-        font-weight: 600;
-        color: #0d6efd;
-    }
-
-    .inventory-pre {
-        background-color: #f8f9fa;
-        border-radius: 4px;
-        padding: 0.5rem;
-        font-size: 0.875rem;
-        margin: 0;
-    }
-
-    .book-cover-container {
-        height: 500px;
-        border-radius: 8px;
-        overflow: hidden;
-        background-color: #f8f9fa;
-    }
-</style>
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/book.css" />
+}
