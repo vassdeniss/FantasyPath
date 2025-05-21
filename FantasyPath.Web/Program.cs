@@ -28,6 +28,7 @@ builder.Services.AddAutoMapper(typeof(IBookService).Assembly, typeof(CollectionC
 builder.Services.AddScoped<IRepository, Repository>();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<ISaveService, SaveService>();
+builder.Services.AddScoped<IUserBookService, UserBookService>();
 
 var app = builder.Build();
 

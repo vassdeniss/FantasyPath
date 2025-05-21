@@ -1,0 +1,463 @@
+﻿@model GraphViewModel
+
+@{
+    ViewData["Title"] = "Graph Manager";
+}
+
+<div class="container-fluid vh-100">
+    <div class="row h-100">
+        <div class="col-md-3 border-end bg-light p-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4>Graph Manager</h4>
+                <a asp-controller="Book" asp-action="Index" asp-route-id="@Model.BookId"
+                   class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Back to Book
+                </a>
+            </div>
+
+            <div class="mb-3">
+                <h6>Create Node</h6>
+                <div class="row g-2 mb-3">
+                    <div class="col-4">
+                        <input type="number" id="nodeId" class="form-control form-control-sm"
+                               placeholder="Node ID" required>
+                    </div>
+                    <div class="col-8">
+                        <input type="text" id="targetNodes" class="form-control form-control-sm"
+                               placeholder="Connections (space-separated)">
+                    </div>
+                </div>
+                <textarea id="nodeText" class="form-control form-control-sm mb-2"
+                          rows="2" placeholder="Node text"></textarea>
+
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary btn-sm flex-grow-1" onclick="addNode()">
+                        <i class="bi bi-plus-circle"></i> Add Node
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="document.getElementById('nodeId').value=''; document.getElementById('nodeText').value=''; document.getElementById('targetNodes').value='';">
+                        Clear
+                    </button>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    <button type="button" class="btn btn-sm template-btn"
+                            data-fill="red" data-font="white" data-shape="ellipse">
+                        Death
+                    </button>
+                    <button type="button" class="btn btn-sm template-btn"
+                            data-fill="green" data-font="white" data-shape="ellipse">
+                        End
+                    </button>
+                    <button type="button" class="btn btn-sm template-btn"
+                            data-fill="orange" data-font="white" data-shape="ellipse">
+                        Fight
+                    </button>
+                    <button type="button" class="btn btn-sm template-btn"
+                            data-fill="yellow" data-font="black" data-shape="ellipse">
+                        Test
+                    </button>
+                    <button type="button" class="btn btn-sm template-btn"
+                            data-fill="gray" data-font="white" data-shape="ellipse">
+                        Item
+                    </button>
+                    <button type="button" class="btn btn-sm template-btn"
+                            data-fill="purple" data-font="white" data-shape="ellipse">
+                        Gain
+                    </button>
+                    <button type="button" class="btn btn-sm template-btn"
+                            data-fill="navy" data-font="white" data-shape="ellipse">
+                        Loss
+                    </button>
+                </div>
+            </div>
+
+            <div class="border-top pt-3">
+                <h6>Existing Nodes</h6>
+                <div id="nodeList" class="mt-2">
+                </div>
+            </div>
+            <form method="post" asp-action="Save" id="saveForm">
+                <input type="hidden" asp-for="BookId">
+                <input type="hidden" asp-for="GraphData" id="graphDataInput">
+                <input type="hidden" asp-for="BookName">
+                <button id="saveGraphBtn" class="btn btn-success w-100" type="button">Save Graph</button>
+            </form>
+        </div>
+
+        <!-- Graph Visualization -->
+        <div class="col-md-9 p-0">
+            <div id="graphOutput" class="h-100 bg-white"></div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Node</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editNodeId">
+                <div class="mb-3">
+                    <label class="form-label">Node Text</label>
+                    <textarea id="editNodeText" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Node Color</label>
+                    <div class="d-flex align-items-center gap-2">
+                        <input type="color" id="editNodeColor" class="form-control form-control-color flex-grow-1">
+                        <div class="d-flex flex-wrap gap-1">
+                            <!-- Template buttons for edit modal -->
+                            <button type="button" class="btn btn-sm edit-template-btn"
+                                    data-fill="red" data-font="white" data-shape="ellipse">
+                                D
+                            </button>
+                            <button type="button" class="btn btn-sm edit-template-btn"
+                                    data-fill="green" data-font="white" data-shape="ellipse">
+                                E
+                            </button>
+                            <button type="button" class="btn btn-sm edit-template-btn"
+                                    data-fill="orange" data-font="white" data-shape="ellipse">
+                                F
+                            </button>
+                            <button type="button" class="btn btn-sm edit-template-btn"
+                                    data-fill="yellow" data-font="black" data-shape="ellipse">
+                                T
+                            </button>
+                            <button type="button" class="btn btn-sm edit-template-btn"
+                                    data-fill="gray" data-font="white" data-shape="ellipse">
+                                I
+                            </button>
+                            <button type="button" class="btn btn-sm edit-template-btn"
+                                    data-fill="purple" data-font="white" data-shape="ellipse">
+                                G
+                            </button>
+                            <button type="button" class="btn btn-sm edit-template-btn"
+                                    data-fill="navy" data-font="white" data-shape="ellipse">
+                                L
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Connections</label>
+                    <input type="text" id="editConnections" class="form-control"
+                           placeholder="Space-separated node IDs">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="saveEditedNode()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/graph.css" />
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/@@hpcc-js/wasm@2.22.4/dist/index.umd.min.js"></script>
+    <script>
+        let nodes = @Html.Raw(Model.GraphData ?? "[]");
+        let selectedTemplate = null;
+        let editingNode = null;
+        let editSelectedTemplate = null;
+
+        function openEditModal(nodeId) {
+            const node = nodes.find(n => n.id === nodeId);
+            if (!node) return;
+
+            editingNode = node;
+            document.getElementById('editNodeId').value = nodeId;
+            document.getElementById('editNodeText').value = node.label.replace(/\\n/g, '\n');
+            document.getElementById('editNodeColor').value = node.fillcolor;
+            document.getElementById('editConnections').value = node.connections
+                .map(c => c.replace('node', ''))
+                .join(' ');
+
+            new bootstrap.Modal('#editModal').show();
+        }
+
+        function saveEditedNode() {
+            const newText = document.getElementById('editNodeText').value;
+            const newColor = document.getElementById('editNodeColor').value;
+            const newConnections = document.getElementById('editConnections').value
+                .split(' ')
+                .filter(Boolean)
+                .map(c => `node${c}`);
+
+            if (editSelectedTemplate) {
+                editingNode.fillcolor = editSelectedTemplate.fillcolor;
+                editingNode.fontcolor = editSelectedTemplate.fontcolor;
+                editingNode.shape = editSelectedTemplate.shape;
+            } else {
+                editingNode.fillcolor = newColor;
+            }
+
+            editingNode.label = newText.replace(/\n/g, '\\n');
+            editingNode.connections = newConnections;
+
+            newConnections.forEach(targetId => {
+                if (!nodes.some(n => n.id === targetId)) {
+                    nodes.push({
+                        id: targetId,
+                        label: targetId.replace('node', ''),
+                        fillcolor: '#ffffff',
+                        fontcolor: '#000000',
+                        style: "filled",
+                        shape: "ellipse",
+                        connections: []
+                    });
+                }
+            });
+
+            updateNodeList();
+            updateGraph();
+            bootstrap.Modal.getInstance('#editModal').hide();
+            editSelectedTemplate = null;
+        }
+
+        document.querySelectorAll('.edit-template-btn').forEach(btn => {
+            btn.style.backgroundColor = btn.dataset.fill;
+            btn.style.color = btn.dataset.font;
+
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.edit-template-btn').forEach(b =>
+                    b.classList.remove('active'));
+
+                this.classList.add('active');
+                editSelectedTemplate = {
+                    fillcolor: this.dataset.fill,
+                    fontcolor: this.dataset.font,
+                    shape: this.dataset.shape
+                };
+
+                // Update color picker and node properties
+                document.getElementById('editNodeColor').value = this.dataset.fill;
+                if (editingNode) {
+                    editingNode.fillcolor = this.dataset.fill;
+                    editingNode.fontcolor = this.dataset.font;
+                    editingNode.shape = this.dataset.shape;
+                }
+            });
+        });
+
+        document.querySelectorAll('.template-btn').forEach(btn => {
+            btn.setAttribute("style", `background-color: ${btn.dataset.fill}; color: ${btn.dataset.font}`);
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.template-btn').forEach(b =>
+                    b.classList.remove('active', 'btn-active'));
+
+                this.classList.add('active', 'btn-active');
+
+                selectedTemplate = {
+                    fillcolor: this.dataset.fill,
+                    fontcolor: this.dataset.font,
+                    shape: this.dataset.shape,
+                    style: "filled"
+                };
+            });
+        });
+
+        function addNode() {
+            const nodeNumber = document.getElementById('nodeId').value;
+            const text = document.getElementById('nodeText').value;
+            const targets = document.getElementById('targetNodes').value.split(' ').filter(Boolean);
+
+            if (!nodeNumber) {
+                alert('Please enter a node ID');
+                return;
+            }
+
+            const nodeId = `node${nodeNumber}`;
+            let node = nodes.find(n => n.id === nodeId);
+
+            if (!node) {
+                node = {
+                    id: nodeId,
+                    label: text.replace(/\n/g, '\\n') + `\\n${nodeNumber}` || nodeNumber,
+                    fillcolor: '#ffffff',
+                    fontcolor: '#000000',
+                    style: "filled",
+                    shape: "ellipse",
+                    connections: []
+                };
+
+                if (selectedTemplate) {
+                    node.fillcolor = selectedTemplate.fillcolor;
+                    node.fontcolor = selectedTemplate.fontcolor;
+                    node.shape = selectedTemplate.shape;
+                    node.style = selectedTemplate.style;
+                }
+
+                nodes.push(node);
+            }
+
+            if (targets.length > 0) {
+                targets.forEach(targetNumber => {
+                    const targetId = `node${targetNumber}`;
+                    if (!node.connections.includes(targetId)) {
+                        node.connections.push(targetId);
+                    }
+
+                    if (!nodes.some(n => n.id === targetId)) {
+                        nodes.push({
+                            id: targetId,
+                            label: targetNumber,
+                            fillcolor: '#ffffff',
+                            fontcolor: '#000000',
+                            style: "filled",
+                            shape: "ellipse",
+                            connections: []
+                        });
+                    }
+                });
+            }
+
+            updateNodeList();
+            updateGraph();
+
+            document.getElementById('nodeId').value = '';
+            document.getElementById('nodeText').value = '';
+            document.getElementById('targetNodes').value = '';
+        }
+
+        function removeNode(nodeId) {
+            nodes = nodes.filter(n => n.id !== nodeId);
+
+            nodes.forEach(node => {
+                node.connections = node.connections.filter(conn => conn !== nodeId);
+            });
+
+            updateNodeList();
+            updateGraph();
+        }
+
+        function updateNodeList() {
+            const nodeList = document.getElementById('nodeList');
+            nodeList.innerHTML = nodes.slice().reverse().map((node) => `
+            <div class="d-flex align-items-center gap-2 mb-2 p-2 rounded" 
+                 style="background-color: ${node.fillcolor}; 
+                        border: 1px solid ${node.fillcolor};
+                        color: ${node.fontcolor}">
+                <div style="flex-grow: 1">${node.label.replace(/\\n/g, '\n')}</div>
+                <button class="btn btn-primary btn-sm" 
+                        onclick="openEditModal('${node.id}')">
+                    <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-danger btn-sm" 
+                        onclick="removeNode('${node.id}')">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        `).join('');
+
+            document.getElementById('graphDataInput').value = JSON.stringify(nodes);
+        }
+
+        async function updateGraph() {
+            const dot = `digraph {
+            rankdir="LR"
+            label="@this.Model.BookName"
+            labelloc=t
+            labeljust=l
+            {Legend [shape=none, margin=0, label=<
+                <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+                 <TR>
+                  <TD COLSPAN="2"><B>Legend</B></TD>
+                 </TR>
+                 <TR>
+                  <TD>Gain</TD>
+                  <TD BGCOLOR="PURPLE"></TD>
+                 </TR>
+                 <TR>
+                  <TD>Loss</TD>
+                  <TD BGCOLOR="NAVY"></TD>
+                 </TR>
+                 <TR>
+                  <TD>Item Required</TD>
+                  <TD BGCOLOR="GRAY"></TD>
+                 </TR>
+                 <TR>
+                  <TD>Test</TD>
+                  <TD BGCOLOR="YELLOW"></TD>
+                 </TR>
+                 <TR>
+                  <TD>Fight</TD>
+                  <TD BGCOLOR="ORANGE"></TD>
+                 </TR>
+                 <TR>
+                  <TD>End</TD>
+                  <TD BGCOLOR="GREEN"></TD>
+                 </TR>
+                 <TR>
+                  <TD>Death</TD>
+                  <TD BGCOLOR="RED"></TD>
+                 </TR>
+                </TABLE>
+               >];
+            }
+            node [shape=ellipse]
+            
+            ${nodes.map(node =>
+                `"${node.id}" [
+                    label="${node.label}"
+                    fillcolor="${node.fillcolor}"
+                    fontcolor="${node.fontcolor}"
+                    style="${node.style}"
+                    shape="${node.shape}"
+                ]`
+            ).join('\n')}
+            
+            ${nodes.flatMap(node =>
+                node.connections?.map(target =>
+                    `"${node.id}" -> "${target}"`
+                ) || []
+            ).join('\n')}
+        }`;
+
+            try {
+                const hpccWasm = await window["@@hpcc-js/wasm"];
+                const graphviz = await hpccWasm.Graphviz.load();
+                document.getElementById('graphOutput').innerHTML = await graphviz.layout(dot, "svg", "dot");
+            } catch (error) {
+                console.error('Graphviz error:', error);
+            }
+        }
+
+        function ensureNodeExists(nodeNumber) {
+            const nodeId = `node${nodeNumber}`;
+            let node = nodes.find(n => n.id === nodeId);
+
+            if (!node) {
+                node = {
+                    id: nodeId,
+                    label: nodeNumber,
+                    fillcolor: '#ffffff',
+                    fontcolor: '#000000',
+                    style: "filled",
+                    shape: "ellipse",
+                    connections: []
+                };
+                nodes.push(node);
+            }
+            return node;
+        }
+
+        window.addEventListener('load', () => {
+            updateNodeList();
+            updateGraph();
+        });
+
+        document.getElementById('saveGraphBtn').addEventListener('click', () => {
+            document.getElementById('saveForm').submit();
+        });
+    </script>
+}
