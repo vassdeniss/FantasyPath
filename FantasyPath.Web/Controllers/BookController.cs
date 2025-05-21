@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FantasyPath.Web.Controllers;
 
-public class BookController(IBookService bookService, ISaveService saveService, IMapper mapper) : Controller
+public class BookController(IBookService bookService, IUserBookService userBookService, ISaveService saveService, IMapper mapper) : Controller
 {
     [HttpGet]
     [Authorize]
@@ -22,6 +22,8 @@ public class BookController(IBookService bookService, ISaveService saveService, 
         ICollection<SaveServiceModel> saves = await saveService.GetBookByIdAndUserWithSavesAsync(
             this.User.Id(),id);
         BookServiceModel book = await bookService.GetBookByIdAsync(id);
+        
+        await userBookService.UpdateLastViewedTime(id, this.User.Id());
 
         BookSaveViewModel bookSaveModel = new()
         {

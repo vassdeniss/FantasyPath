@@ -1,0 +1,37 @@
+﻿@using FantasyPath.Web.Extensions
+@model BookViewModel
+
+<div class="col">
+    <div class="card h-100 shadow-sm card-animation">
+        <div class="book-cover-container">
+            <img src="@Model.CoverImageUrl"
+                 class="book-cover"
+                 alt="@Model.Title">
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">@Model.Title</h5>
+            <p class="card-text text-muted">@Model.Author</p>
+            <div class="text-muted small">
+                <i class="bi bi-upc"></i> @Model.Isbn
+            </div>
+        </div>
+        <div class="card-footer bg-transparent">
+            @if (ViewData["ShowAddButton"] as bool? == true)
+            {
+                <form asp-controller="Collection" asp-action="Add" method="post" class="d-inline">
+                    <input type="hidden" name="BookId" value="@Model.Id" />
+                    <input type="hidden" name="UserId" value="@User.Id()" />
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="bi bi-plus-circle"></i> Add to Collection
+                    </button>
+                </form>
+            }
+            else
+            {
+                <a asp-controller="Book" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-outline-primary btn-sm">
+                    View Details
+                </a>
+            }
+        </div>
+    </div>
+</div>

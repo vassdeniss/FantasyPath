@@ -107,40 +107,36 @@
                     <textarea id="editNodeText" class="form-control" rows="3"></textarea>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Node Color</label>
-                    <div class="d-flex align-items-center gap-2">
-                        <input type="color" id="editNodeColor" class="form-control form-control-color flex-grow-1">
-                        <div class="d-flex flex-wrap gap-1">
-                            <!-- Template buttons for edit modal -->
-                            <button type="button" class="btn btn-sm edit-template-btn"
-                                    data-fill="red" data-font="white" data-shape="ellipse">
-                                D
-                            </button>
-                            <button type="button" class="btn btn-sm edit-template-btn"
-                                    data-fill="green" data-font="white" data-shape="ellipse">
-                                E
-                            </button>
-                            <button type="button" class="btn btn-sm edit-template-btn"
-                                    data-fill="orange" data-font="white" data-shape="ellipse">
-                                F
-                            </button>
-                            <button type="button" class="btn btn-sm edit-template-btn"
-                                    data-fill="yellow" data-font="black" data-shape="ellipse">
-                                T
-                            </button>
-                            <button type="button" class="btn btn-sm edit-template-btn"
-                                    data-fill="gray" data-font="white" data-shape="ellipse">
-                                I
-                            </button>
-                            <button type="button" class="btn btn-sm edit-template-btn"
-                                    data-fill="purple" data-font="white" data-shape="ellipse">
-                                G
-                            </button>
-                            <button type="button" class="btn btn-sm edit-template-btn"
-                                    data-fill="navy" data-font="white" data-shape="ellipse">
-                                L
-                            </button>
-                        </div>
+                    <label class="form-label">Node Type</label>
+                    <div class="d-flex justify-content-between gap-2">
+                        <button type="button" class="btn btn-sm edit-template-btn"
+                                data-fill="red" data-font="white" data-shape="ellipse">
+                            Death
+                        </button>
+                        <button type="button" class="btn btn-sm edit-template-btn"
+                                data-fill="green" data-font="white" data-shape="ellipse">
+                            End
+                        </button>
+                        <button type="button" class="btn btn-sm edit-template-btn"
+                                data-fill="orange" data-font="white" data-shape="ellipse">
+                            Fight
+                        </button>
+                        <button type="button" class="btn btn-sm edit-template-btn"
+                                data-fill="yellow" data-font="black" data-shape="ellipse">
+                            Test
+                        </button>
+                        <button type="button" class="btn btn-sm edit-template-btn"
+                                data-fill="gray" data-font="white" data-shape="ellipse">
+                            Item
+                        </button>
+                        <button type="button" class="btn btn-sm edit-template-btn"
+                                data-fill="purple" data-font="white" data-shape="ellipse">
+                            Gain
+                        </button>
+                        <button type="button" class="btn btn-sm edit-template-btn"
+                                data-fill="navy" data-font="white" data-shape="ellipse">
+                            Lose
+                        </button>
                     </div>
                 </div>
                 <div class="mb-3">
@@ -157,11 +153,6 @@
     </div>
 </div>
 
-@section Styles
-{
-    <link rel="stylesheet" href="~/css/graph.css" />
-}
-
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/@@hpcc-js/wasm@2.22.4/dist/index.umd.min.js"></script>
     <script>
@@ -177,7 +168,6 @@
             editingNode = node;
             document.getElementById('editNodeId').value = nodeId;
             document.getElementById('editNodeText').value = node.label.replace(/\\n/g, '\n');
-            document.getElementById('editNodeColor').value = node.fillcolor;
             document.getElementById('editConnections').value = node.connections
                 .map(c => c.replace('node', ''))
                 .join(' ');
@@ -187,7 +177,6 @@
 
         function saveEditedNode() {
             const newText = document.getElementById('editNodeText').value;
-            const newColor = document.getElementById('editNodeColor').value;
             const newConnections = document.getElementById('editConnections').value
                 .split(' ')
                 .filter(Boolean)
@@ -197,8 +186,6 @@
                 editingNode.fillcolor = editSelectedTemplate.fillcolor;
                 editingNode.fontcolor = editSelectedTemplate.fontcolor;
                 editingNode.shape = editSelectedTemplate.shape;
-            } else {
-                editingNode.fillcolor = newColor;
             }
 
             editingNode.label = newText.replace(/\n/g, '\\n');
@@ -239,8 +226,6 @@
                     shape: this.dataset.shape
                 };
 
-                // Update color picker and node properties
-                document.getElementById('editNodeColor').value = this.dataset.fill;
                 if (editingNode) {
                     editingNode.fillcolor = this.dataset.fill;
                     editingNode.fontcolor = this.dataset.font;

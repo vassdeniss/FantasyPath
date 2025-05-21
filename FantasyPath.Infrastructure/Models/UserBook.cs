@@ -13,4 +13,6 @@ public class UserBook
     public User User { get; init; } = null!;
 
     public Book Book { get; init; } = null!;
+    
+    public DateTime LastViewed { get; set; }
 }

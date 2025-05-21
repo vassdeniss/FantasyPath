@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Collections;
+using AutoMapper;
 using FantasyPath.Services.Contracts;
 using FantasyPath.Services.Models;
 using FantasyPath.Web.Extensions;
@@ -8,22 +9,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FantasyPath.Web.Controllers;
 
-public class CollectionController : Controller
+public class CollectionController(IBookService bookService, IUserBookService userBookService, IMapper mapper)
+    : Controller
 {
-    private readonly IBookService _bookService;
-    private readonly IMapper _mapper;
-
-    public CollectionController(IBookService bookService, IMapper mapper)
-    {
-        this._bookService = bookService;
-        this._mapper = mapper;
-    }
-    
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        ICollection<BookServiceModel> dbBooks = await this._bookService.GetAllBooksForUserAsync(this.User.Id());
-        IEnumerable<BookViewModel> books = this._mapper.Map<IEnumerable<BookViewModel>>(dbBooks);
+        ICollection<BookServiceModel> dbBooks = await userBookService.GetAllBooksForUserAsync(this.User.Id());
+        IEnumerable<BookViewModel> books = mapper.Map<IEnumerable<BookViewModel>>(dbBooks);
 
         return this.View(books);
     }
@@ -32,10 +25,12 @@ public class CollectionController : Controller
     [Authorize]
     public async Task<IActionResult> Add()
     {
-        ICollection<BookServiceModel> dbBooks = await this._bookService.GetAllBooksUserDoesNotOwnAsync(this.User.Id());
-        IEnumerable<BookViewModel> books = this._mapper.Map<IEnumerable<BookViewModel>>(dbBooks);
+        ICollection<BookServiceModel> userBooks = await userBookService.GetAllBooksForUserAsync(this.User.Id());
+        HashSet<Guid> userBookIds = userBooks.Select(ub => ub.Id).ToHashSet();
+        ICollection<BookServiceModel> allBooks = await bookService.GetAllBooksAsync();
+        IEnumerable<BookServiceModel> books = allBooks.Where(b => !userBookIds.Contains(b.Id));
         
-        return this.View(books);
+        return this.View(mapper.Map<IEnumerable<BookViewModel>>(books));
     }
 
     [HttpPost]
@@ -48,7 +43,7 @@ public class CollectionController : Controller
             return this.Forbid();
         }
         
-        await this._bookService.AddBookToUserAsync(model.UserId, model.BookId);
+        await userBookService.AddBookToUserAsync(model.UserId, model.BookId);
         
         return this.RedirectToAction("Index", "Home");
     }

@@ -32,27 +32,7 @@ ViewData["Title"] = "My Gamebook Collection";
     <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
         @foreach (BookViewModel book in this.Model)
         {
-        <div class="col">
-            <div class="card h-100 shadow-sm">
-                <div class="book-cover-container">
-                    <img src="@(string.IsNullOrEmpty(book.CoverImageUrl) ? "/images/default-cover.jpg" : book.CoverImageUrl)"
-                         class="book-cover"
-                         alt="@book.Title">
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">@book.Title</h5>
-                    <p class="card-text text-muted">@book.Author</p>
-                    <div class="text-muted small">
-                        <i class="bi bi-upc"></i> @book.Isbn
-                    </div>
-                </div>
-                <div class="card-footer bg-transparent">
-                    <a asp-controller="Book" asp-action="Index" asp-route-id="@book.Id" class="btn btn-outline-primary btn-sm">
-                        View Details
-                    </a>
-                </div>
-            </div>
-        </div>
+            @await Html.PartialAsync("_BookCardPartial", book)
         }
     </div>
     }
@@ -60,5 +40,5 @@ ViewData["Title"] = "My Gamebook Collection";
 
 @section Styles
 {
-    <link rel="stylesheet" href="~/css/collection.css" />
+    <link rel="stylesheet" href="~/css/book-card.css" />
 }
