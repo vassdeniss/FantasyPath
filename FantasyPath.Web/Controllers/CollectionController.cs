@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using AutoMapper;
+﻿using AutoMapper;
 using FantasyPath.Services.Contracts;
 using FantasyPath.Services.Models;
 using FantasyPath.Web.Extensions;
