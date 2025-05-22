@@ -1,6 +1,4 @@
-﻿@using System.Security.Claims
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-@model IEnumerable<BookViewModel>
+﻿@model IEnumerable<BookViewModel>
 
 @{
     ViewData["Title"] = "Add Book";
@@ -9,7 +7,7 @@
 
 <div class="container">
     <h2>Available Books</h2>
-    <div class="row">
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
         @foreach (BookViewModel book in Model)
         {
             @await Html.PartialAsync("_BookCardPartial", book)

@@ -10,6 +10,7 @@ services:
     - "dotnet"
     - "/app/bin/Debug/net8.0/FantasyPath.Web.dll"
     environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
       ASPNETCORE_STATICWEBASSETS: "/app/bin/Debug/net8.0/FantasyPath.Web.staticwebassets.runtime.CT.json"
       DOTNET_USE_POLLING_FILE_WATCHER: "true"
     image: "fantasypath:dev"

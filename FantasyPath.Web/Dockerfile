@@ -1,13 +1,14 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER $APP_UID
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
+EXPOSE 8082
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["FantasyPath.Web/FantasyPath.Web.csproj", "FantasyPath.Web/"]
+COPY ["FantasyPath.Infrastructure/FantasyPath.Infrastructure.csproj", "FantasyPath.Infrastructure/"]
+COPY ["FantasyPath.Services/FantasyPath.Services.csproj", "FantasyPath.Services/"]
 RUN dotnet restore "FantasyPath.Web/FantasyPath.Web.csproj"
 COPY . .
 WORKDIR "/src/FantasyPath.Web"
