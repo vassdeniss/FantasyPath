@@ -10,5 +10,5 @@ public class BookServiceModel
     
     public string Isbn { get; init; } = null!;
 
-    public string CoverImageUrl { get; init; } = null!;
+    public int Order { get; init; }
 }

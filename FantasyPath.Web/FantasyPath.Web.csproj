@@ -33,4 +33,8 @@
       <ProjectReference Include="..\FantasyPath.Services\FantasyPath.Services.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="wwwroot\covers\" />
+    </ItemGroup>
+
 </Project>

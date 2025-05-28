@@ -27,7 +27,8 @@ public class CollectionController(IBookService bookService, IUserBookService use
         ICollection<BookServiceModel> userBooks = await userBookService.GetAllBooksForUserAsync(this.User.Id());
         HashSet<Guid> userBookIds = userBooks.Select(ub => ub.Id).ToHashSet();
         ICollection<BookServiceModel> allBooks = await bookService.GetAllBooksAsync();
-        IEnumerable<BookServiceModel> books = allBooks.Where(b => !userBookIds.Contains(b.Id));
+        IEnumerable<BookServiceModel> books = allBooks.Where(b => !userBookIds.Contains(b.Id))
+            .OrderBy(b => b.Order);
         
         return this.View(mapper.Map<IEnumerable<BookViewModel>>(books));
     }

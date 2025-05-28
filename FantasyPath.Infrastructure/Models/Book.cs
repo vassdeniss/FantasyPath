@@ -17,5 +17,5 @@ public class Book
     [Required]
     public string Isbn { get; init; } = null!;
 
-    [MaxLength(500)] public string CoverImageUrl { get; init; } = null!;
+    [Required] public int Order { get; init; }
 }
